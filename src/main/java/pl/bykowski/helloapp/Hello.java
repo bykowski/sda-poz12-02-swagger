@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("/api")
+@RestController
 public class Hello {
 
     private List<User> users;
@@ -21,33 +21,22 @@ public class Hello {
         this.users = new ArrayList<>();
     }
 
-    @GetMapping
+    @GetMapping("/api")
     public List<User> getUsers() {
         return users;
     }
 
-    @PostMapping
-    public void addUser(@RequestParam long id,
-                        @RequestParam String name,
-                        @RequestParam String surname,
-                        @RequestParam int age,
-                        @RequestParam String sex) {
-        User user = new User();
-        user.setId(id);
-        user.setName(name);
-        user.setSurname(surname);
-        user.setAge(age);
-        user.setSex(sex);
+    @PostMapping("/api")
+    public void addUser(@RequestBody User user) {
         users.add(user);
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/api")
     public boolean removeUser(@RequestParam long id) {
         Optional<User> first = users.stream()
                 .filter(x -> id == x.getId()).findFirst();
-        if(first.isPresent())
-        {
+        if (first.isPresent()) {
             return users.remove(first.get());
         }
         return false;
